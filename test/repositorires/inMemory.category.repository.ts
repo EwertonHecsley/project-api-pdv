@@ -9,4 +9,8 @@ export class InMemoryCategoryRepository implements CategoryRepository {
 
         return category;
     }
+
+    async list(): Promise<Category[]> {
+        return this.itens;
+    }
 }

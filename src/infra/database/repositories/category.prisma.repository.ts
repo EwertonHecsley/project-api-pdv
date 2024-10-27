@@ -7,14 +7,20 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class CategoryPrismaRepository implements CategoryRepository {
 
-    constructor(private readonly prismaservice: PrismaService) { }
+    constructor(private readonly prismaService: PrismaService) { }
 
     async create(categoryData: Category): Promise<Category> {
 
         const data = CategoryPrismaMappers.toDatabase(categoryData);
 
-        const category = await this.prismaservice.category.create({ data });
+        const category = await this.prismaService.category.create({ data });
 
         return CategoryPrismaMappers.toDomain(category);
+    }
+
+    async list(): Promise<Category[]> {
+        const list = await this.prismaService.category.findMany();
+
+        return list.map(CategoryPrismaMappers.toDomain);
     }
 }

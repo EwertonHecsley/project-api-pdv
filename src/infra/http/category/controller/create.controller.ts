@@ -11,7 +11,7 @@ export class CreateCategoryController {
 
     @Post()
     @HttpCode(201)
-    async createCategory(@Body() data: CategoryDto, @Res() response: Response) {
+    async handler(@Body() data: CategoryDto, @Res() response: Response) {
         const result = await this.categoryService.execute(data);
 
         if (result.isLeft()) {
