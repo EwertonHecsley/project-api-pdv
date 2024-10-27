@@ -10,7 +10,7 @@ export class CreateCategoryController {
     constructor(private readonly categoryService: CreateCategoryUseCase) { }
 
     @Post()
-    @HttpCode(20)
+    @HttpCode(201)
     async createCategory(@Body() data: CategoryDto, @Res() response: Response) {
         const result = await this.categoryService.execute(data);
 

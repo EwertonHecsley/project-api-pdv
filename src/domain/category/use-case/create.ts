@@ -13,6 +13,7 @@ export class CreateCategoryUseCase {
     constructor(private readonly categoryRepository: CategoryRepository) { }
 
     async execute(data: Request): Promise<Response> {
+
         const category = Category.create(data);
 
         const result = await this.categoryRepository.create(category);
