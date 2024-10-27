@@ -1,4 +1,4 @@
-import { Either, right } from "src/errors/either";
+import { Either, right } from "../../../errors/either";
 import { CategoryRepository } from "../repository/category.repository";
 import { Category } from "../entity/Category.entity";
 
