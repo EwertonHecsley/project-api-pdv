@@ -1,5 +1,5 @@
-import Entity from "src/core/generics/Entity";
-import Identity from "src/core/generics/Identity";
+import Entity from "../../../core/generics/Entity";
+import Identity from "../../../core/generics/Identity";
 
 type CategoryType = {
     description: string;
