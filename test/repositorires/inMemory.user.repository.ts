@@ -9,4 +9,8 @@ export class InMemoryUserRepository implements UserRepository {
 
         return entity;
     }
+
+    async findByEmail(email: string): Promise<User> {
+        return this.itens.find(element => element.email.value === email);
+    }
 }
