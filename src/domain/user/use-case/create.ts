@@ -1,8 +1,8 @@
-import { Either, left, right } from "src/errors/either";
+import { Either, left, right } from "../../../errors/either";
 import { UserRepository } from "../repository/user.repository";
 import { BadRequestException } from "@nestjs/common";
 import { User } from "../entity/user.entity";
-import Email from "src/shared/value-object/Email";
+import Email from "../../../shared/value-object/Email";
 
 type Request = {
     name: string;
