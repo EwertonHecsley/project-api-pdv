@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { HashRepository } from "src/domain/user/service/hash/hash.repository";
-import { HashService } from "./hash/hash";
+import { HashService } from "../crypto/hash";
 
 @Module({
     providers: [

@@ -34,7 +34,7 @@ export class CreateUser_UseCase {
         }
 
         const hashPassword = await this.hashRepository.hash(user.password);
-
+        console.log(hashPassword);
         const newUser = User.create(
             {
                 name: user.name,
