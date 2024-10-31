@@ -3,6 +3,7 @@ import { UserRepository } from "../repository/user.repository";
 import { BadRequestException } from "@nestjs/common";
 import { User } from "../entity/user.entity";
 import Email from "../../../shared/value-object/Email";
+import { HashRepository } from "../service/hash/hash.repository";
 
 type Request = {
     name: string;
@@ -14,7 +15,10 @@ type Response = Either<BadRequestException, User>;
 
 export class CreateUser_UseCase {
 
-    constructor(private readonly userRepository: UserRepository) { }
+    constructor(
+        private readonly userRepository: UserRepository,
+        private readonly hashRepository: HashRepository
+    ) { }
 
     async execute(user: Request): Promise<Response> {
         const emailExist = await this.userRepository.findByEmail(user.email);
@@ -29,11 +33,13 @@ export class CreateUser_UseCase {
             return left(new BadRequestException(`Invalid email format`));
         }
 
+        const hashPassword = await this.hashRepository.hash(user.password);
+
         const newUser = User.create(
             {
                 name: user.name,
                 email: EMAIL,
-                password: user.password
+                password: hashPassword
             }
         )
 
