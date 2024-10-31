@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { UserRepository } from "src/domain/user/repository/user.repository";
 import { CreateUser_UseCase } from "src/domain/user/use-case/create";
 import { DatabaseModule } from "src/infra/database/database.module";
+import { CreateUserController } from "./controllers/create.controller";
 
 @Module({
     imports: [DatabaseModule],
@@ -14,6 +15,6 @@ import { DatabaseModule } from "src/infra/database/database.module";
             inject: [UserRepository]
         }
     ],
-    controllers: []
+    controllers: [CreateUserController]
 })
 export class UserModule { }

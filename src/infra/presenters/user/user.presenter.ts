@@ -6,7 +6,7 @@ export class UserPrismaPresenter {
         return {
             id: entity.id.valueId,
             name: entity.name,
-            email: entity.email
+            email: entity.email.value
         }
     }
 }

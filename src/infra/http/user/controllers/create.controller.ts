@@ -15,7 +15,7 @@ export class CreateUserController {
         const result = await this.userService.execute(dataUser);
 
         if (result.isLeft()) {
-            throw new Error("Internal Server Error");
+            throw result.value
         }
 
         return response.json(UserPrismaPresenter.toHttp(result.value));
