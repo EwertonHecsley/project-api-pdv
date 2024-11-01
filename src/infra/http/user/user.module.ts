@@ -5,6 +5,9 @@ import { DatabaseModule } from "src/infra/database/database.module";
 import { CreateUserController } from "./controllers/create.controller";
 import { HashRepository } from "src/domain/user/service/hash/hash.repository";
 import { CryptoModule } from "src/infra/crypto/crypto.module";
+import { AuthUseCase } from "src/domain/user/use-case/auth";
+import { TokenRepository } from "src/domain/user/service/token/token.repository";
+import { LoginController } from "./controllers/login.controller";
 
 @Module({
     imports: [DatabaseModule, CryptoModule],
@@ -18,8 +21,19 @@ import { CryptoModule } from "src/infra/crypto/crypto.module";
                 return new CreateUser_UseCase(userRepository, hashRepository)
             },
             inject: [UserRepository, HashRepository]
+        },
+        {
+            provide: AuthUseCase,
+            useFactory: (
+                userRepository: UserRepository,
+                hashRepository: HashRepository,
+                jwtRepository: TokenRepository
+            ) => {
+                return new AuthUseCase(userRepository, hashRepository, jwtRepository)
+            },
+            inject: [UserRepository, HashRepository, TokenRepository]
         }
     ],
-    controllers: [CreateUserController]
+    controllers: [CreateUserController, LoginController]
 })
 export class UserModule { }
