@@ -1,6 +1,6 @@
 
 import { plainToInstance } from 'class-transformer';
-import { IsEnum, IsNumber, IsUrl, Max, Min, validateSync } from 'class-validator';
+import { IsEnum, IsNumber, IsString, IsUrl, Max, Min, validateSync } from 'class-validator';
 
 enum Environment {
     Development = "development",
@@ -20,6 +20,9 @@ class EnvironmentVariables {
 
     @IsUrl({ protocols: ['postgresql'], require_tld: false })
     DATABASE_URL: string;
+
+    @IsString()
+    TOKEN_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {
