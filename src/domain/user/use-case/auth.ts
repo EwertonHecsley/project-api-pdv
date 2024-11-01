@@ -21,6 +21,7 @@ export class AuthUseCase {
     ) { }
 
     async execute({ email, password }: Request): Promise<Response> {
+
         const user = await this.userRepository.findByEmail(email);
 
         if (!user) {
