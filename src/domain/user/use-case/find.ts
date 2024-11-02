@@ -1,4 +1,4 @@
-import { Either, left, right } from "src/errors/either";
+import { Either, left, right } from "../../../errors/either";
 import { UserRepository } from "../repository/user.repository";
 import { NotFoundException } from "@nestjs/common";
 import { User } from "../entity/user.entity";
