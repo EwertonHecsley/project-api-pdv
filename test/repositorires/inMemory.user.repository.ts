@@ -13,4 +13,10 @@ export class InMemoryUserRepository implements UserRepository {
     async findByEmail(email: string): Promise<User> {
         return this.itens.find(element => element.email.value === email);
     }
+
+    async find(id: string): Promise<User> {
+        const user = this.itens.find(element => element.id.valueId == id);
+
+        return user;
+    }
 }
