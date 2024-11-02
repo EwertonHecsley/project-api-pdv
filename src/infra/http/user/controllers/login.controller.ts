@@ -1,5 +1,5 @@
-import { Body, Controller, HttpCode, Post, Res } from "@nestjs/common";
-import { Response } from "express";
+import { Body, Controller, HttpCode, Post, Req, Res } from "@nestjs/common";
+import { Response, Request } from "express";
 import { LoginDto } from "src/domain/user/dto/login.dto";
 import { AuthUseCase } from "src/domain/user/use-case/auth";
 import { Public } from "src/infra/auth/pubic";
@@ -13,7 +13,7 @@ export class LoginController {
     @Public()
     @Post()
     @HttpCode(200)
-    async handler(@Body() data: LoginDto, @Res() response: Response) {
+    async handler(@Body() data: LoginDto, @Req() request: Request, @Res() response: Response) {
 
         const result = await this.authService.execute(data);
 
@@ -22,6 +22,8 @@ export class LoginController {
         }
 
         const { token, user } = result.value;
+
+        request.user = { id: user.id.valueId };
 
         return response.json(
             {
