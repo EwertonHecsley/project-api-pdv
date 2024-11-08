@@ -1,9 +1,9 @@
-import Email from "src/shared/value-object/Email";
+import Email from "../../../shared/value-object/Email";
 import { UserRepository } from "../repository/user.repository";
 import { HashRepository } from "../service/hash/hash.repository";
-import { Either, left, right } from "src/errors/either";
+import { Either, left, right } from "../../../errors/either";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
-import { Optional } from "src/utils/types/optinonal";
+import { Optional } from "../../../utils/types/optinonal";
 
 type Request = {
     id: string;
