@@ -10,6 +10,8 @@ import { TokenRepository } from "src/domain/user/service/token/token.repository"
 import { LoginController } from "./controllers/login.controller";
 import { FindUserUseCase } from "src/domain/user/use-case/find";
 import { FindUserController } from "./controllers/find.controller";
+import { EditUserUseCase } from "src/domain/user/use-case/edit";
+import { EditUserController } from "./controllers/edit.controller";
 
 @Module({
     imports: [DatabaseModule, CryptoModule],
@@ -41,8 +43,15 @@ import { FindUserController } from "./controllers/find.controller";
                 return new FindUserUseCase(userRepository);
             },
             inject: [UserRepository]
+        },
+        {
+            provide: EditUserUseCase,
+            useFactory: (userRepository: UserRepository, hashRepository) => {
+                return new EditUserUseCase(userRepository, hashRepository);
+            },
+            inject: [UserRepository, HashRepository]
         }
     ],
-    controllers: [CreateUserController, LoginController, FindUserController]
+    controllers: [CreateUserController, LoginController, FindUserController, EditUserController]
 })
 export class UserModule { }
