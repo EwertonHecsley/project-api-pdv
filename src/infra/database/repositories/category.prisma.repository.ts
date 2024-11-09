@@ -23,4 +23,10 @@ export class CategoryPrismaRepository implements CategoryRepository {
 
         return list.map(CategoryPrismaMappers.toDomain);
     }
+
+    async find(id: string): Promise<Category> {
+        const category = await this.prismaService.category.findUnique({ where: { id }, include: { product: true } });
+
+        return category ? CategoryPrismaMappers.toDomain(category) : null;
+    }
 }
