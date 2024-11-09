@@ -13,7 +13,7 @@ type Request = {
 
 type Response = Either<NotFoundException | BadRequestException, Product>;
 
-export class CreateProduct {
+export class CreateProductUseCase {
 
     constructor(
         private readonly productRepository: ProductRepository,

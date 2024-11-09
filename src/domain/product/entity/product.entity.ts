@@ -14,7 +14,7 @@ export class Product extends Entity<ProductType> {
         return new Product({ ...product }, id)
     }
 
-    get descripton(): string {
+    get description(): string {
         return this.attributes.description;
     }
 
