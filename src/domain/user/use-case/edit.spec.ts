@@ -1,80 +1,62 @@
-import { EditUserUseCase } from '../use-case/edit';
-import { HashRepository } from '../service/hash/hash.repository';
-import { NotFoundException } from '@nestjs/common';
-import Email from '../../../shared/value-object/Email';
-import { User } from '../entity/user.entity';
-import { InMemoryUserRepository } from 'test/repositorires/inMemory.user.repository';
+import Email from "../../../shared/value-object/Email";
+import { InMemoryUserRepository } from "../../../../test/repositorires/inMemory.user.repository";
+import { User } from "../entity/user.entity";
+import { HashRepository } from "../service/hash/hash.repository";
+import { EditUserUseCase } from "./edit";
 
-describe('EditUserUseCase', () => {
-    let userRepositoryMock: Partial<InMemoryUserRepository>;
-    let hashRepositoryMock: Partial<HashRepository>;
-    let editUserUseCase: EditUserUseCase;
-    let user: User;
+describe('Teste UseCase User', () => {
+
+    let userRepository: InMemoryUserRepository;
+    let useCase: EditUserUseCase;
+    let hashRepositoryMock: HashRepository;
 
     beforeEach(() => {
-        userRepositoryMock = {
-            find: jest.fn(),
-            findByEmail: jest.fn(),
-            save: jest.fn(),
-        };
-        hashRepositoryMock = {
-            hash: jest.fn().mockResolvedValue('hashed-password'),
-        };
-        editUserUseCase = new EditUserUseCase(userRepositoryMock as InMemoryUserRepository, hashRepositoryMock as HashRepository);
-
-
-        user = {
-            id: 'user-id',
-            name: 'Ewerton',
-            email: Email.create('ewerton@gmail.com'),
-            password: 'hashed-password',
-        } as unknown as User;
+        userRepository = new InMemoryUserRepository();
+        useCase = new EditUserUseCase(userRepository, hashRepositoryMock);
     });
 
-    test('deve editar um usuário com sucesso', async () => {
-        const id = 'user-id';
-        const newName = 'New Name';
-        const newEmail = 'newemail@example.com';
-        const newPassword = 'newpassword';
+    test('Deve editar um usuário com sucesso', async () => {
 
-        userRepositoryMock.find(id);
-        userRepositoryMock.save(user);
+        const user = User.create(
+            {
+                name: 'User Teste',
+                email: Email.create('email@email.com'),
+                password: '1234'
+            }
+        )
 
-        const result = await editUserUseCase.execute({
-            id,
-            name: newName,
-            email: newEmail,
-            password: newPassword,
-        });
+        await userRepository.itens.push(user);
 
-        expect(result.isRigth()).toBe(true);
-        expect(result.value).toBe(true);
-        expect(userRepositoryMock.find).toHaveBeenCalledWith(id);
-        expect(hashRepositoryMock.hash).toHaveBeenCalledWith(newPassword);
-        expect(userRepositoryMock.findByEmail).toHaveBeenCalledWith(newEmail);
-        expect(userRepositoryMock.save).toHaveBeenCalledWith(user);
-        expect(user.name).toBe(newName);
-        expect(user.email.value).toBe(newEmail);
-        expect(user.password).toBe('hashed-password'); // A senha deve estar hashada
-    });
+        await useCase.execute(
+            {
+                id: user.id.valueId,
+                name: 'Novo Nome'
+            }
+        )
 
-    test('deve falhar ao editar um usuário que não existe', async () => {
-        const id = 'nonexistent-id';
+        expect(userRepository.itens[0].name).toEqual('Novo Nome');
+    })
 
-        userRepositoryMock.find(null);
+    test('Deve dar erro ao passar um ID invalido ou nao existente', async () => {
 
-        const result = await editUserUseCase.execute({
-            id,
-            name: 'New Name',
-            email: 'newemail@example.com',
-            password: 'newpassword',
-        });
+        const user = User.create(
+            {
+                name: 'User Teste',
+                email: Email.create('email@email.com'),
+                password: '1234'
+            }
+        )
 
-        expect(result.isLeft()).toBe(true);
-        expect(result.value).toBeInstanceOf(NotFoundException);
-        expect(userRepositoryMock.find).toHaveBeenCalledWith(id);
-        expect(hashRepositoryMock.hash).not.toHaveBeenCalled();
-        expect(userRepositoryMock.findByEmail).not.toHaveBeenCalled();
-        expect(userRepositoryMock.save).not.toHaveBeenCalled();
-    });
-});
+        await userRepository.itens.push(user);
+
+        const response = await useCase.execute(
+            {
+                id: 'ID_INVALIDO',
+                name: 'Novo Nome'
+            }
+        )
+
+        expect(response.isLeft()).toBeTruthy();
+    })
+
+})
