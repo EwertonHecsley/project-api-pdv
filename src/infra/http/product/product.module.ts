@@ -4,6 +4,8 @@ import { ProductRepository } from "src/domain/product/repository/product.reposit
 import { CreateProductUseCase } from "src/domain/product/useCase/create";
 import { DatabaseModule } from "src/infra/database/database.module";
 import { CreateProductController } from "./controller/create.product.controller";
+import { EditProductUseCase } from "src/domain/product/useCase/edit";
+import { EditProductController } from "./controller/edit.poduct.controller";
 
 @Module({
     imports: [DatabaseModule],
@@ -14,8 +16,15 @@ import { CreateProductController } from "./controller/create.product.controller"
                 return new CreateProductUseCase(productRepository, categoryRepository);
             },
             inject: [ProductRepository, CategoryRepository]
+        },
+        {
+            provide: EditProductUseCase,
+            useFactory: (productRepository: ProductRepository, categoryRepository: CategoryRepository) => {
+                return new EditProductUseCase(productRepository, categoryRepository);
+            },
+            inject: [ProductRepository, CategoryRepository]
         }
     ],
-    controllers: [CreateProductController]
+    controllers: [CreateProductController, EditProductController]
 })
 export class ProductModule { }
