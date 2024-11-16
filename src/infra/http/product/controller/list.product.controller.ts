@@ -10,7 +10,7 @@ export class ListProductController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    async handler(@Res() response: Response, @Query() categoryId?: string) {
+    async handler(@Res() response: Response, @Query('categoryId') categoryId?: string) {
         const result = await this.productService.execute({ categoryId });
 
         if (result.isLeft()) {
