@@ -8,6 +8,8 @@ import { EditProductUseCase } from "src/domain/product/useCase/edit";
 import { EditProductController } from "./controller/edit.poduct.controller";
 import { ListAllProductsUseCase } from "src/domain/product/useCase/list";
 import { ListProductController } from "./controller/list.product.controller";
+import { FindProductController } from "./controller/find.product.controller";
+import { FindProductUseCase } from "src/domain/product/useCase/find";
 
 @Module({
     imports: [DatabaseModule],
@@ -32,8 +34,15 @@ import { ListProductController } from "./controller/list.product.controller";
                 return new ListAllProductsUseCase(productRepository);
             },
             inject: [ProductRepository]
+        },
+        {
+            provide: FindProductUseCase,
+            useFactory: (productRepository: ProductRepository) => {
+                return new FindProductUseCase(productRepository);
+            },
+            inject: [ProductRepository]
         }
     ],
-    controllers: [CreateProductController, EditProductController, ListProductController]
+    controllers: [CreateProductController, EditProductController, ListProductController, FindProductController]
 })
 export class ProductModule { }
